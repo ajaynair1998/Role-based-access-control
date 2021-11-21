@@ -36,6 +36,18 @@ class Connection {
     });
     return applications;
   }
+
+  async changeStateOfApplication(id, newState) {
+    let update = await Application.update(
+      { state: newState },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+    return update ? true : false;
+  }
 }
 
 module.exports = Connection;
