@@ -48,6 +48,16 @@ class Connection {
     );
     return update ? true : false;
   }
+
+  async retrieveResumePath(id) {
+    let resumePath = await Application.findOne({
+      where: {
+        id: id,
+      },
+      attributes: ["resume_path"],
+    });
+    return resumePath;
+  }
 }
 
 module.exports = Connection;
