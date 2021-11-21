@@ -26,6 +26,16 @@ class Connection {
 
     return true;
   }
+
+  async retrieveApplications(state) {
+    let applications = await Application.findAll({
+      where: {
+        state: state,
+      },
+      attributes: { exclude: "resume_path" },
+    });
+    return applications;
+  }
 }
 
 module.exports = Connection;
