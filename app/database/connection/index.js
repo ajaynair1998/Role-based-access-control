@@ -1,6 +1,8 @@
 const { Sequelize } = require("sequelize");
 // import model for Application
 let Application = require("../../models/Application");
+let User = require("../../models/User");
+let hashPassword = require("../../services/bcrypt/hash-password");
 
 class Connection {
   constructor() {
@@ -8,6 +10,7 @@ class Connection {
       host: "localhost",
       dialect: "mysql",
     });
+    this.sequelize.sync({ force: false });
   }
 
   async addApplication(
@@ -57,6 +60,21 @@ class Connection {
       attributes: ["resume_path"],
     });
     return resumePath;
+  }
+
+  async addUser(name, password, role = "user") {
+    try {
+      let hashedPassword = await hashPassword(password);
+      let addedUserSuccessfully = await User.create({
+        user_name: name,
+        password: hashedPassword,
+        role: role,
+      });
+
+      return addedUserSuccessfully;
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 
