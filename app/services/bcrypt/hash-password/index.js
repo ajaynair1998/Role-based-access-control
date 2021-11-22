@@ -7,8 +7,13 @@ async function test() {
 }
 
 async function hashPassword(password) {
-  const hashedPassword = await bcrypt.hash(password, 10);
-  return hashedPassword;
+  try {
+    console.log(password);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    return hashedPassword;
+  } catch (err) {
+    console.log(err.message);
+  }
 }
 
 module.exports = hashPassword;

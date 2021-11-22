@@ -10,7 +10,6 @@ class Connection {
       host: "localhost",
       dialect: "mysql",
     });
-    this.sequelize.sync({ force: false });
   }
 
   async addApplication(
@@ -19,6 +18,7 @@ class Connection {
     resume_path,
     time = Date.now()
   ) {
+    await this.sequelize.sync({});
     await Application.create({
       candidate_name: candidate_name,
       position_applied_to: position_applied_to,
@@ -65,6 +65,7 @@ class Connection {
   async addUser(name, password, role = "user") {
     try {
       let hashedPassword = await hashPassword(password);
+      console.log(hashedPassword);
       let addedUserSuccessfully = await User.create({
         user_name: name,
         password: hashedPassword,
@@ -74,6 +75,23 @@ class Connection {
       return addedUserSuccessfully;
     } catch (err) {
       console.log(err);
+    }
+  }
+  async getHashedPasswordOfUser(user_name) {
+    try {
+      let user = await User.findOne({ where: { user_name: user_name } });
+      return user.password ? user.password : false;
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  async retrieveUser(user_name) {
+    try {
+      let user = await User.findOne({ where: { user_name: user_name } });
+      return { user_name: user.user_name, role: user.role };
+    } catch (err) {
+      console.log(err.message);
     }
   }
 }
