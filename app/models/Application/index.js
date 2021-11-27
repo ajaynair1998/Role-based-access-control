@@ -21,6 +21,10 @@ const Application = sequelize.define("Application", {
     type: DataTypes.TEXT,
     allowNull: true,
   },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   time: {
     type: DataTypes.STRING,
   },
