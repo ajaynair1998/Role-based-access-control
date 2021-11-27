@@ -3,7 +3,7 @@ const sequelize = new Sequelize("mydb", "root", "password", {
   host: "localhost",
   dialect: "mysql",
 });
-// sequelize.sync({ force: true });
+sequelize.sync({ alter: true });
 const Application = sequelize.define("Application", {
   candidate_name: {
     type: DataTypes.STRING,
@@ -15,6 +15,10 @@ const Application = sequelize.define("Application", {
   },
   resume_path: {
     type: DataTypes.STRING,
+    allowNull: true,
+  },
+  skills: {
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   time: {

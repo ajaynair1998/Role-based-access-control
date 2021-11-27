@@ -11,8 +11,9 @@ const upload = multer({ storage: storageConfig });
 router.post("/", upload.single("resume"), async (req, res) => {
   console.log(req.file, req.body);
   let { path, originalname } = req.file;
-  let { userName, position } = req.body;
-  await db.addApplication(userName, position, path);
+  let { userName, position, skills } = req.body;
+  console.log(skills);
+  await db.addApplication(userName, position, path, skills);
   res.status(200).json({ success: true });
 });
 

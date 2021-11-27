@@ -16,6 +16,7 @@ class Connection {
     candidate_name,
     position_applied_to,
     resume_path,
+    skills,
     time = Date.now()
   ) {
     await this.sequelize.sync({});
@@ -23,6 +24,7 @@ class Connection {
       candidate_name: candidate_name,
       position_applied_to: position_applied_to,
       resume_path: resume_path,
+      skills: skills,
       time: time,
       state: "pending",
     });

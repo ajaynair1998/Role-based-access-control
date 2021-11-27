@@ -3,7 +3,7 @@ const sequelize = new Sequelize("mydb", "root", "password", {
   host: "localhost",
   dialect: "mysql",
 });
-sequelize.sync({});
+sequelize.sync({ alter: true });
 const User = sequelize.define("User", {
   user_name: {
     type: DataTypes.STRING,
