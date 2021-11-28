@@ -2,6 +2,7 @@ const { Sequelize } = require("sequelize");
 // import model for Application
 let Application = require("../../models/Application");
 let User = require("../../models/User");
+let Screening_Question = require("../../models/Screening-Question");
 let hashPassword = require("../../services/bcrypt/hash-password");
 
 class Connection {
@@ -96,6 +97,34 @@ class Connection {
       return { user_name: user.user_name, role: user.role };
     } catch (err) {
       console.log(err.message);
+    }
+  }
+
+  async addNewScreeningQuestion(question_category, question) {
+    try {
+      await Screening_Question.create({
+        question_category: question_category,
+        question: question,
+      });
+      return true;
+    } catch (err) {
+      console.log(err.message);
+      return false;
+    }
+  }
+
+  async getScreeningQuestionsForACategory(question_category) {
+    try {
+      let questions = await Screening_Question.findAll({
+        where: {
+          question_category: question_category,
+        },
+      });
+      console.log(questions);
+      return questions;
+    } catch (Err) {
+      console.log(Err.message);
+      return false;
     }
   }
 }

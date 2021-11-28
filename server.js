@@ -11,6 +11,8 @@ let actionOnApplication = require("./app/routes/action-on-application");
 let viewResume = require("./app/routes/view-resume");
 let signUp = require("./app/routes/sign-up");
 let logIn = require("./app/routes/log-in");
+let addNewScreeningQuestion = require("./app/routes/add-new-screening-question-admin");
+let getScreeningQuestionsForACandidate = require("./app/routes/get-screening-questions-candidate");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,6 +30,13 @@ app.use("/api/view-resume", viewResume);
 app.use("/api/sign-up", signUp);
 // route to log-in
 app.use("/api/log-in", logIn);
+// route to add-new-screening-question
+app.use("/api/add-new-screening-question", addNewScreeningQuestion);
+// route to get-screening-questions
+app.use(
+  "/api/screening-questions-candidate",
+  getScreeningQuestionsForACandidate
+);
 
 app.listen(PORT, () => {
   console.log(`API server listening at http://localhost:${PORT}`);
