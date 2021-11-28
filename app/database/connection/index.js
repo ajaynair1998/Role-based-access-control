@@ -1,4 +1,4 @@
-const { Sequelize } = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 // import model for Application
 let Application = require("../../models/Application");
 let User = require("../../models/User");
@@ -35,14 +35,31 @@ class Connection {
     return true;
   }
 
-  async retrieveApplications(state) {
+  async retrieveApplications(state, searchTerm, pageNumber, limit) {
+    let totalCount = await Application.count({});
     let applications = await Application.findAll({
       where: {
         state: state,
+        [Op.or]: [
+          {
+            candidate_name: {
+              [Op.like]: "%" + searchTerm + "%",
+            },
+          },
+          {
+            email: {
+              [Op.like]: "%" + searchTerm + "%",
+            },
+          },
+        ],
       },
+      offset: Number((pageNumber - 1) * limit),
+      limit: Number(limit),
+      order: [["createdAt", "DESC"]],
+
       attributes: { exclude: "resume_path" },
     });
-    return applications;
+    return { count: totalCount, applications: applications };
   }
 
   async changeStateOfApplication(id, newState) {

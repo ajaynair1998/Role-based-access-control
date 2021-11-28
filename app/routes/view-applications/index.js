@@ -8,8 +8,13 @@ let router = express.Router();
 
 router.get("/", checkPrivilege, async (req, res) => {
   console.log(req.file, req.body);
-  let { state } = req.query;
-  let applications = await db.retrieveApplications(state);
+  let { state, searchTerm, pageNumber, limit } = req.query;
+  let applications = await db.retrieveApplications(
+    state,
+    searchTerm,
+    pageNumber,
+    limit
+  );
   res.status(200).json({ success: true, payload: applications });
 });
 
