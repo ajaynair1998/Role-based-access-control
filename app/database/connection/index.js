@@ -3,7 +3,12 @@ const { Sequelize, Op } = require("sequelize");
 let Application = require("../../models/Application");
 let User = require("../../models/User");
 let Screening_Question = require("../../models/Screening-Question");
+let Note = require("../../models/Note");
 let hashPassword = require("../../services/bcrypt/hash-password");
+
+// Associations defined here
+User.hasMany(Note);
+Note.belongsTo(User);
 
 class Connection {
   constructor() {
@@ -137,10 +142,41 @@ class Connection {
           question_category: question_category,
         },
       });
-      console.log(questions);
       return questions;
     } catch (Err) {
       console.log(Err.message);
+      return false;
+    }
+  }
+  async addNoteOnACandidate(candidate_id, note) {
+    try {
+      await Note.create({
+        note: note,
+        UserId: Number(candidate_id),
+      });
+
+      return true;
+    } catch (err) {
+      console.log(err.message);
+      return false;
+    }
+  }
+
+  async fetchNotesOnACandidate(candidate_id) {
+    try {
+      let notesOnTheUser = await User.findAll({
+        where: {
+          id: Number(candidate_id),
+        },
+        include: [
+          {
+            model: Note,
+          },
+        ],
+      });
+      return notesOnTheUser;
+    } catch (err) {
+      console.log(err);
       return false;
     }
   }

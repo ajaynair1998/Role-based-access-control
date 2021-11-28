@@ -13,6 +13,8 @@ let signUp = require("./app/routes/sign-up");
 let logIn = require("./app/routes/log-in");
 let addNewScreeningQuestion = require("./app/routes/add-new-screening-question-admin");
 let getScreeningQuestionsForACandidate = require("./app/routes/get-screening-questions-candidate");
+let addNoteOnACandidate = require("./app/routes/add-notes-on-candidate-admin");
+let fetchNotesOnACandidate = require("./app/routes/fetch-notes-on-a-candidate-admin");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,6 +39,10 @@ app.use(
   "/api/screening-questions-candidate",
   getScreeningQuestionsForACandidate
 );
+// route to add note on a candidate
+app.use("/api/add-note-on-a-candidate", addNoteOnACandidate);
+// route to fetch notes on a candidate
+app.use("/api/fetch-notes-on-a-candidate", fetchNotesOnACandidate);
 
 app.listen(PORT, () => {
   console.log(`API server listening at http://localhost:${PORT}`);
